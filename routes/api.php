@@ -31,7 +31,7 @@ Route::middleware('api')->prefix('user')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('criar',  'store');
         Route::get('ver/{id}', 'show');
-        Route::put('mudar', 'update');
-        Route::delete('deletar',  'destroy');
+        Route::put('mudar/{id}', 'update');
+        Route::delete('deletar/{id}',  'destroy');
     });
 });

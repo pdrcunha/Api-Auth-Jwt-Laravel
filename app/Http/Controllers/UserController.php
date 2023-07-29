@@ -31,18 +31,32 @@ class UserController extends Controller
    
     public function show(string $id)
     {
-        
+        $user = User::find($id);
+        return response()->json($user);
     }
 
 
-    public function update(Request $request, string $id)
+    public function update(UserStoreRequest $request, string $id)
     {
-        
+        $user = User::find($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+
+        $user->save();
+
+        return response()->json(['message' => 'Usuário editado com sucesso', 'user' => $user], 201);
     }
 
 
     public function destroy(string $id)
     {
-        
+        $user = User::find($id);
+
+        if ($user) {
+            $user->delete();
+            return response()->json(['message' => 'Usuário deletado com sucesso'], 201);
+        } 
+        return response()->json(['message' => 'Usuário nao encontrado'], 404);
     }
 }

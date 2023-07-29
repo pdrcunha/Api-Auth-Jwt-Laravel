@@ -3,7 +3,7 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
 
 class UserStoreRequest extends FormRequest
 {
@@ -16,9 +16,13 @@ class UserStoreRequest extends FormRequest
 
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                $id?Rule::unique('users')->ignore($id):'unique:users,email'],
             'password' => 'required|min:6',
         ];
     }
@@ -31,7 +35,7 @@ class UserStoreRequest extends FormRequest
 
             'email.required' => 'Email obrigatório.',
             'email.email' => 'Email no formato errado.',
-            'email.unique:users' => 'Email já cadastrado',
+            'email.unique' => 'Email já cadastrado',
 
             'password.required' => 'Senha obrigatória',
             'password.min' => 'A senha deve conter no mínimo 6 caracteres',
