@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,15 @@ Route::middleware('api')->prefix('auth')->group(function () {
 
 Route::middleware('api')->prefix('user')->group(function () {
     Route::controller(UserController::class)->group(function () {
+        Route::post('criar',  'store');
+        Route::get('ver/{id}', 'show');
+        Route::put('mudar/{id}', 'update');
+        Route::delete('deletar/{id}',  'destroy');
+    });
+});
+
+Route::middleware('api')->prefix('prodcts')->group(function () {
+    Route::controller(ProdutoController::class)->group(function () {
         Route::post('criar',  'store');
         Route::get('ver/{id}', 'show');
         Route::put('mudar/{id}', 'update');

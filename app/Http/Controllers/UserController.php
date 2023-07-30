@@ -23,18 +23,16 @@ class UserController extends Controller
 
             return response()->json(['message' => 'Usuário criado com sucesso', 'user' => $user], 201);
         } catch (\Throwable $th) {
-            return response()->json(['message' =>$th->getMessage()], 401);
+            return response()->json(['message' => $th->getMessage()], 401);
         }
-
     }
 
-   
     public function show(string $id)
     {
         $user = User::find($id);
+        if (!$user)  return response()->json(['message' => 'Usuário não encontrado'], 404);
         return response()->json($user);
     }
-
 
     public function update(UserStoreRequest $request, string $id)
     {
@@ -53,10 +51,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if ($user) {
-            $user->delete();
-            return response()->json(['message' => 'Usuário deletado com sucesso'], 201);
-        } 
-        return response()->json(['message' => 'Usuário nao encontrado'], 404);
+        if (!$user)  return response()->json(['message' => 'Usuário não encontrado'], 404);
+        $user->delete();
+        return response()->json(['message' => 'Usuário deletado com sucesso'], 201);
     }
 }
